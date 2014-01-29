@@ -73,7 +73,7 @@
 {
     if (!self.panelShowing) {
         [self addTransparentGestureView];
-        [self movePanelRight];
+        [self movePanelDown];
     } else {
         [self movePanelToOriginalPosition];
     }
@@ -118,7 +118,10 @@
 {
     if (!self.searchPanelViewController) {
         self.searchPanelViewController = [[SearchPanelViewController alloc] initWithNibName:@"SearchPanelViewController" bundle:nil];
-        self.searchPanelViewController.view.frame = self.view.frame;
+        self.searchPanelViewController.view.frame = CGRectMake(self.view.frame.origin.x,
+                                                               self.view.frame.origin.y - 20,
+                                                               self.view.frame.size.width,
+                                                               self.view.frame.size.height);
         self.searchPanelViewController.delegate = self;
         self.searchPanelViewController.searchBar.delegate = self;
         
@@ -134,7 +137,7 @@
     return self.searchPanelViewController.view;
 }
 
-- (void)movePanelRight
+- (void)movePanelDown
 {
     [self getSearchPanelView];
     
@@ -149,6 +152,8 @@
                                                                                                green:0.f
                                                                                                 blue:0.f
                                                                                                alpha:0.85];
+                         
+                         self.searchPanelViewController.view.frame = self.view.frame;
                      }
                      completion:^(BOOL finished) {
                          self.panelShowing = !self.panelShowing;
@@ -164,6 +169,11 @@
                          self.mainViewController.view.frame = originalPositionRect;
                          
                          self.mainViewController.overlayView.backgroundColor = [UIColor clearColor];
+                         
+                         self.searchPanelViewController.view.frame = CGRectMake(self.view.frame.origin.x,
+                                                                                self.view.frame.origin.y - 20,
+                                                                                self.view.frame.size.width,
+                                                                                self.view.frame.size.height);
                      }
                      completion:^(BOOL finished) {
                          self.panelShowing = !self.panelShowing;
